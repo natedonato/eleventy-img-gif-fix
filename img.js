@@ -414,6 +414,15 @@ class Image {
       metadata.width = height;
       metadata.height = width;
     }
+    
+     if(metadata.pageHeight) {
+      // When the { animated: true } option is provided to sharp, animated
+      // image formats like gifs or webp will have an inaccurate `height` value
+      // in their metadata which is actually the height of every single frame added together.
+      // In these cases, the metadata will contain an additional `pageHeight` property which
+      // is the height that the image should be displayed at.
+      metadata.height = metadata.pageHeight;
+    }
 
     for(let outputFormat of outputFormats) {
       if(!outputFormat || outputFormat === "auto") {
